@@ -1,3 +1,4 @@
+/* ex01 */
 package main
 
 import "fmt"
