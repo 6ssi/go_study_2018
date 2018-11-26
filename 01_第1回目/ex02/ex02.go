@@ -14,6 +14,9 @@ func main() {
 
 func countargs(inputargs []string) {
 	fmt.Printf("You have "+"%d"+" arguments.\n", len(inputargs[1:]))
+	/* inputargs[1:]
+	can also be
+		inputargs[1 : len(inputargs)] */
 }
 
 func printargs(inputargs []string) {
