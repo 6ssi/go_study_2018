@@ -11,11 +11,9 @@ import (
 
 func main() {
 	inputcmd := flag.String("cmd", "ls", "Type your command")
-	inputopt := flag.String("opt", "l", "Type your option")
+	inputopt := flag.String("opt", "-l", "Type your option")
 	flag.Parse()
-	strcmd := *inputcmd
-	stropt := *inputopt
-	cmd := exec.Command(strcmd, stropt)
+	cmd := exec.Command(*inputcmd, *inputopt)
 	out, err := cmd.Output()
 	if err != nil {
 		fmt.Printf("Oops -> %s", err)
