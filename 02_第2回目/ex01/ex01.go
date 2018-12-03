@@ -14,9 +14,10 @@ func main() {
 		log.Fatal(err)
 	}
 	data := make([]byte, 100)
+	//byteタイプを100個分格納するスライスを作る、という意味らしい
 	count, err := file.Read(data)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("read %d bytes: %q\n", count, data[:count])
+	fmt.Printf("%q\n", data[:count])
 }
