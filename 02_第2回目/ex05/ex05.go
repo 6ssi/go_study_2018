@@ -19,19 +19,18 @@ type goengineer struct {
 }
 
 func main() {
-	file, err := os.Open("./kon.json")
+	file, err := os.Open("./go_study_member.json")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
-	var goeng []goengineer
+	engdecoder := json.NewDecoder(file)
 	for scanner.Scan() {
-		if err := json.Unmarshal(scanner.Bytes(), &goeng); err != nil {
+		goeng, err := engdecoder.Token()
+		if err != nil {
 			log.Fatal(err)
 		}
-		for _, g := range goeng {
-			fmt.Printf("ID:%d\nName:%s\nAge:%s\n Ability(Programming):%s\n Ability(Operation):%s\n", g.ID, g.Name, g.Age, g.Ability.Programming, g.Ability.Operation)
-		}
+		fmt.Printf("%T%v", goeng, goeng)
 	}
 }

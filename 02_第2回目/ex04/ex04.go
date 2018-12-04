@@ -31,7 +31,7 @@ func main() {
 			log.Fatal(err)
 		}
 		for _, g := range goeng {
-			fmt.Printf("ID:%d\nName:%s\nAge:%s\n Ability(Programming):%s\n Ability(Operation):%s\n", g.ID, g.Name, g.Age, g.Ability.Programming, g.Ability.Operation)
+			fmt.Printf("ID:%d\nName:%s\nAge:%s\n", g.ID, g.Name, g.Age)
 		}
 	}
 }
