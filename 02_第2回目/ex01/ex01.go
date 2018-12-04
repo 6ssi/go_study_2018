@@ -13,8 +13,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer file.Close()
 	data := make([]byte, 100)
-	//byteタイプを100個分格納するスライスを作る、という意味らしい
 	count, err := file.Read(data)
 	if err != nil {
 		log.Fatal(err)
