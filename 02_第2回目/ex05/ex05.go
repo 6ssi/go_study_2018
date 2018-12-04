@@ -25,12 +25,11 @@ func main() {
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
-	engdecoder := json.NewDecoder(file)
-	for scanner.Scan() {
-		goeng, err := engdecoder.Token()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("%T%v", goeng, goeng)
+	var goeng []goengineer
+	if err := json.Unmarshal(scanner.Bytes(), &goeng); err != nil {
+		log.Fatal(err)
+	}
+	for _, g := range goeng {
+		fmt.Printf("ID:%d\nName:%s\nAge:%s\n", g.ID, g.Name, g.Age)
 	}
 }
