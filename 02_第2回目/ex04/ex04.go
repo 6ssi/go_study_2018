@@ -1,5 +1,15 @@
 package main
 
+/*
+注意！
+Scannerは一行毎にデータを読み込む仕様であり、一行読み込む毎に
+json.Unmarshallをする作りにすると複数行あるjsonに対応できない。
+（本プログラムが該当する）
+複数行のjson = 一行中にjsonの始まりと終わりの"{}"が含まれない　ので
+　"unexpected end of JSON input"
+エラーが出て異常終了してしまう。
+*/
+
 import (
 	"bufio"
 	"encoding/json"
