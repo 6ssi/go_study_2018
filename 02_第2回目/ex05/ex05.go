@@ -1,11 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
-	"os"
 )
 
 type goengineer struct {
@@ -19,14 +18,12 @@ type goengineer struct {
 }
 
 func main() {
-	file, err := os.Open("./go_study_member.json")
+	file, err := ioutil.ReadFile("./go_study_member.json")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
 	var goeng []goengineer
-	if err := json.Unmarshal(scanner.Bytes(), &goeng); err != nil {
+	if err := json.Unmarshal(file, &goeng); err != nil {
 		log.Fatal(err)
 	}
 	for _, g := range goeng {
