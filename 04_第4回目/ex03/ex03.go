@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 func main() {
@@ -22,9 +23,13 @@ func get() {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%q\n", body[:])
+	count := 0
+	doc.Find("a").Each(func(_ int, s *goquery.Selection) {
+		count++
+	})
+	fmt.Printf("<a>タグの数は：%d個\n", count)
 }
