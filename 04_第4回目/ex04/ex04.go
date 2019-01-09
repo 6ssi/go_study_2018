@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -23,12 +24,20 @@ func get() {
 		log.Fatal(err)
 	}
 	count := 1
-	doc.Find("span").Each(func(_ int, s *goquery.Selection) {
-		span, exist := s.Attr("class")
-		if exist == true && span == "d-inline-block float-sm-right" && count <= 10 {
-			stars := s.Find("span class").Text()
-			fmt.Printf("%d位のStarの数 : %s\n", count, stars)
+	doc.Find("html > body > div > div > div > div > div > ol > li").Each(func(_ int, s *goquery.Selection) {
+		repoid, exist := s.Attr("id")
+		reponame := strings.Trim(repoid, "pa-")
+		if exist == true && count <= 10 {
+			fmt.Printf("%d位\n   リポジトリ名 : %s\n", count, reponame)
+			s.Find("a").Each(func(_ int, f *goquery.Selection) {
+				hrefall, existhref := f.Attr("href")
+				if existhref == true && strings.HasSuffix(hrefall, "/stargazers") == true {
+					stars := strings.TrimSpace(f.Text())
+					fmt.Printf("   スター数     : %s\n", stars)
+				}
+			})
 			count++
 		}
 	})
+
 }
