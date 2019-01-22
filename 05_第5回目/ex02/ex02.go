@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 
@@ -32,22 +33,24 @@ func main() {
 	for i := range clmvals {
 		rowvals[i] = &clmvals[i]
 	}
-	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe("localhost:8000", nil))
-	fmt.Println("--------------------------------------")
-	for rows.Next() {
-		for i, col := range clmvals {
-			fmt.Printf(clm[i], ":", string(col))
+	sqlhandler := func(w http.ResponseWriter, req *http.Request) {
+		var val string
+		io.WriteString(w, "--------------------------------------\n")
+		for rows.Next() {
+			err := rows.Scan(rowvals...)
+			if err != nil {
+				fmt.Printf("Unable to Scan values from Select Query")
+			}
+			for i, col := range clmvals {
+				val = string(col)
+				io.WriteString(w, clm[i])
+				io.WriteString(w, ":")
+				io.WriteString(w, val)
+				io.WriteString(w, "\n")
+			}
+			io.WriteString(w, "--------------------------------------\n")
 		}
-		fmt.Println("--------------------------------------")
 	}
-
-}
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/hello" {
-		fmt.Fprint(w, "hello web server!")
-	} else {
-		fmt.Fprintf(w, "URL.Path = %q\n", r.URL.Path)
-	}
+	http.HandleFunc("/selectall", sqlhandler)
+	log.Fatal(http.ListenAndServe(":8000", nil))
 }
