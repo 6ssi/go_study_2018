@@ -24,19 +24,19 @@ func main() {
 		fmt.Println("Unable to fetch colums from table")
 	}
 
-	clmvals := make([]sql.RawBytes, len(clm))
-	rowvals := make([]interface{}, len(clmvals))
+	clmbox := make([]sql.RawBytes, len(clm))
+	clmvals := make([]interface{}, len(clmbox))
 
-	for i := range clmvals {
-		rowvals[i] = &clmvals[i]
+	for i := range clmbox {
+		clmvals[i] = &clmbox[i]
 	}
 	fmt.Println("--------------------------------------")
 	for rows.Next() {
-		err := rows.Scan(rowvals...)
+		err := rows.Scan(clmvals...)
 		if err != nil {
 			fmt.Printf("Unable to Scan values from Select Query")
 		}
-		for i, col := range clmvals {
+		for i, col := range clmbox {
 			fmt.Println(clm[i], ":", string(col))
 		}
 		fmt.Println("--------------------------------------")

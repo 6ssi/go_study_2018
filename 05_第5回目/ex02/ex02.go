@@ -27,21 +27,21 @@ func main() {
 		fmt.Println("Unable to fetch colums from table")
 	}
 
-	clmvals := make([]sql.RawBytes, len(clm))
-	rowvals := make([]interface{}, len(clmvals))
+	clmbox := make([]sql.RawBytes, len(clm))
+	clmvals := make([]interface{}, len(clmbox))
 
-	for i := range clmvals {
-		rowvals[i] = &clmvals[i]
+	for i := range clmbox {
+		clmvals[i] = &clmbox[i]
 	}
 	sqlhandler := func(w http.ResponseWriter, req *http.Request) {
 		var val string
 		io.WriteString(w, "--------------------------------------\n")
 		for rows.Next() {
-			err := rows.Scan(rowvals...)
+			err := rows.Scan(clmvals...)
 			if err != nil {
 				fmt.Printf("Unable to Scan values from Select Query")
 			}
-			for i, col := range clmvals {
+			for i, col := range clmbox {
 				val = string(col)
 				io.WriteString(w, clm[i])
 				io.WriteString(w, ":")
